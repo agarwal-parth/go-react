@@ -17,11 +17,11 @@ func main() {
 	fmt.Println("Hello, I am Parth Agarwal!")
 	app := fiber.New()
 
-	app.Get("/api/todos", func(c *fiber.Ctx) error {
-		return c.Status(200).JSON(fiber.Map{"msg": "Trying to run the show!"})
-	})
-
 	todos := []Todo{}
+
+	app.Get("/api/todos", func(c *fiber.Ctx) error {
+		return c.Status(200).JSON(todos)
+	})
 
 	app.Post("/api/todos", func(c *fiber.Ctx) error {
 		todo := &Todo{}
@@ -39,6 +39,19 @@ func main() {
 		todos = append(todos, *todo)
 
 		return c.Status(201).JSON(todo)
+	})
+
+	app.Patch("/api/todos/:id", func(c *fiber.Ctx) error {
+		id := c.Params("id")
+
+		for i, todo := range todos {
+			if fmt.Sprint(todo.ID) == id {
+				todos[i].Completed = true
+				return c.Status(200).JSON(fiber.Map{"msg": "Todo is updated!", "todo": todos[i]})
+			}
+		}
+
+		return c.Status(404).JSON(fiber.Map{"msg": "No matching todo to update!"})
 	})
 
 	log.Fatal(app.Listen(":8000"))
