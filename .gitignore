@@ -9,6 +9,9 @@ _obj
 _test
 vendor/
 
+*.log
+*.toml
+
 *.exe
 *.out
 
@@ -16,3 +19,6 @@ vendor/
 
 /bin/
 *.out
+
+# Ignore the temp folder
+tmp/
