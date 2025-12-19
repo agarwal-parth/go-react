@@ -46,6 +46,17 @@ const TodoForm = () => {
 					value={newTodo}
 					onChange={(e) => setNewTodo(e.target.value)}
 					ref={(input) => { if (input) input.focus(); }}
+
+					placeholder='Add a new todo...'
+					_focus={{ borderColor: 'teal.400' }}
+					required
+					onKeyDown={(e) => {
+						if (e.key === 'Enter') {
+							// clear after submit (allow submit handler to read current value first)
+							setTimeout(() => setNewTodo(""), 0);
+						}
+					}}
+					onBlur={() => setNewTodo("")}
 				/>
 				<Button
 					mx={2}
